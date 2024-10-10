@@ -1,13 +1,13 @@
-import { DataSource } from 'typeorm';
-require('dotenv-flow').config();
+import 'dotenv/config';
+import { DataSource, DataSourceOptions } from 'typeorm';
 
-export const AppDataSource = new DataSource({
+export const dataSourceOptions: DataSourceOptions = {
   type: 'mysql',
   host: process.env.DB_HOST,
   port: parseInt(process.env.DB_PORT) || 3306,
+  database: process.env.DB_NAME,
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
   entities: [
     __dirname + '/../../**/**/*.entity{.ts,.js}',
     'dist/**/**/*.entity.js',
@@ -16,7 +16,12 @@ export const AppDataSource = new DataSource({
     __dirname + './migrations/*{.ts,.js}',
     'dist/core/database/migrations/*{.ts,.js}',
   ],
-  synchronize: false,
   migrationsRun: false,
+  synchronize: false,
   migrationsTableName: 'history',
-});
+  logging: false,
+};
+
+const dataSource = new DataSource(dataSourceOptions);
+
+export default dataSource;
