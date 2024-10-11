@@ -45,15 +45,18 @@ export class AuthService {
         if (user === null) {
           reject({ code: 401, message: 'E-mail ou senha inválidos!' });
         }
-        const firstName = user.name.split(' ');
 
+        
+        const name = user.name.split(' ');
+        
         const jwtPayload = {
           id: user.id,
-          firstName: firstName[0],
+          firstName: name[0],
           occupation: user.occupation,
           email: user.email,
           role: user.role,
         };
+        
         const token = new JwtTokenDto();
         token.token = this.jwtService.sign(jwtPayload);
         resolve(token);

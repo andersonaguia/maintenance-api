@@ -51,4 +51,15 @@ export class UsersRepository extends Repository<UserEntity> {
   async hashPassword(password: string, salt: string): Promise<string> {
     return bcrypt.hash(password, salt);
   }
+
+  async findById(id: number): Promise<UserEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const user = await this.findOne({ where: { id: id } });
+        resolve(user);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
 }
