@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from 'src/core/database/data-source';
 import { CategoryModule } from '../category/category.module';
 import { FrequencyModule } from '../frenquency/frequency.module';
+import { ResponsibleModule } from '../responsible/responsible.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({ autoLoadEntities: true, ...dataSourceOptions }),
@@ -14,6 +15,7 @@ import { FrequencyModule } from '../frenquency/frequency.module';
     UsersModule,
     CategoryModule,
     FrequencyModule,
+    ResponsibleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
