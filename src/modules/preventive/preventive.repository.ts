@@ -1,0 +1,63 @@
+import { Injectable } from '@nestjs/common';
+import { DataSource, IsNull, Repository } from 'typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
+import { UserEntity } from '../users/entities/user.entity';
+import { PreventiveEntity } from './entities/preventive.entity';
+
+@Injectable()
+export class PreventiveRepository extends Repository<PreventiveEntity> {
+  constructor(@InjectDataSource() dataSource: DataSource) {
+    super(PreventiveEntity, dataSource.createEntityManager());
+  }
+/*
+  async findResponsibleByCompany(
+    companyName: string,
+  ): Promise<ResponsibleEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const responsibleFound = await this.findOne({
+          where: {
+            company: companyName.toUpperCase(),
+          },
+        });
+        resolve(responsibleFound);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  async createPreventive(
+    responsibleData: CreatePreventiveDto,
+    userEntity: UserEntity,
+  ): Promise<ResponsibleEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const responsible = new ResponsibleEntity();
+        responsible.company = responsibleData.company.toUpperCase();
+        responsible.phoneNumber = responsibleData.phoneNumber;
+        responsible.email = responsibleData.email;
+        responsible.contact = responsibleData.contact;
+        responsible.user = userEntity;
+
+        const responsibleSaved = await this.save(responsible);
+        resolve(responsibleSaved);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  async findAll(): Promise<ResponsibleEntity[]> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const allResponsible = await this.find({
+          where: { deletedAt: IsNull() },
+        });
+        resolve(allResponsible);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }*/
+}
