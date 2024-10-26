@@ -8,6 +8,8 @@ import { dataSourceOptions } from 'src/core/database/data-source';
 import { CategoryModule } from '../category/category.module';
 import { FrequencyModule } from '../frenquency/frequency.module';
 import { ResponsibleModule } from '../responsible/responsible.module';
+import { PreventiveModule } from '../preventive/preventive.module';
+import { CurrentStatusModule } from '../current-status/current-status.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({ autoLoadEntities: true, ...dataSourceOptions }),
@@ -16,6 +18,8 @@ import { ResponsibleModule } from '../responsible/responsible.module';
     CategoryModule,
     FrequencyModule,
     ResponsibleModule,
+    CurrentStatusModule,
+    PreventiveModule,
   ],
   controllers: [AppController],
   providers: [AppService],
