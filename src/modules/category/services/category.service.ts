@@ -85,4 +85,15 @@ export class CategoryService {
       }
     });
   }
+
+  async findById(id: number): Promise<CategoryEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const category = await this.categoryRepository.findCategoryById(+id);
+        resolve(category);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
 }

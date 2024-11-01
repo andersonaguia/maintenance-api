@@ -87,4 +87,16 @@ export class CurrentStatusService {
       }
     });
   }
+
+  async findById(id: number): Promise<CurrentStatusEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const currentStatus =
+          await this.currentStatusRepository.findCurrentStatusById(+id);
+        resolve(currentStatus);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
 }

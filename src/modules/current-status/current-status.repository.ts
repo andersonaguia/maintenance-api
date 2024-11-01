@@ -16,6 +16,7 @@ export class CurrentStatusRepository extends Repository<CurrentStatusEntity> {
         const currentStatusFound = await this.findOne({
           where: {
             name: name,
+            deletedAt: IsNull(),
           },
         });
         resolve(currentStatusFound);
@@ -50,6 +51,22 @@ export class CurrentStatusRepository extends Repository<CurrentStatusEntity> {
           where: { deletedAt: IsNull() },
         });
         resolve(allCurrentStatus);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  async findCurrentStatusById(id: number): Promise<CurrentStatusEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const currentStatusFound = await this.findOne({
+          where: {
+            id: +id,
+            deletedAt: IsNull(),
+          },
+        });
+        resolve(currentStatusFound);
       } catch (error) {
         reject(error);
       }

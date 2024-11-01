@@ -85,4 +85,15 @@ export class FrequencyService {
       }
     });
   }
+
+  async findById(id: number): Promise<FrequencyEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const frequency = await this.frequencyRepository.findFrequencyById(+id);
+        resolve(frequency);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
 }

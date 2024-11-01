@@ -8,6 +8,6 @@ import { ResponsibleController } from './controllers/responsible.controller';
   imports: [UsersModule],
   controllers: [ResponsibleController],
   providers: [ResponsibleRepository, ResponsibleService],
-  exports: [],
+  exports: [ResponsibleService],
 })
 export class ResponsibleModule {}

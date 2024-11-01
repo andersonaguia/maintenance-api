@@ -8,6 +8,6 @@ import { FrequencyService } from './services/frequency.service';
   imports: [UsersModule],
   controllers: [FrequencyController],
   providers: [FrequencyRepository, FrequencyService],
-  exports: [],
+  exports: [FrequencyService],
 })
 export class FrequencyModule {}

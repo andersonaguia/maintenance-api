@@ -3,61 +3,71 @@ import { DataSource, IsNull, Repository } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { UserEntity } from '../users/entities/user.entity';
 import { PreventiveEntity } from './entities/preventive.entity';
+import { CreatePreventiveDto } from './dto/create-preventive.dto';
+import { CategoryEntity } from '../category/entities/category.entity';
+import { FrequencyEntity } from '../frenquency/entities/frequency.entity';
+import { CurrentStatusEntity } from '../current-status/entities/current-status.entity';
+import { ResponsibleEntity } from '../responsible/entities/responsible.entity';
 
 @Injectable()
 export class PreventiveRepository extends Repository<PreventiveEntity> {
   constructor(@InjectDataSource() dataSource: DataSource) {
     super(PreventiveEntity, dataSource.createEntityManager());
   }
-/*
-  async findResponsibleByCompany(
-    companyName: string,
-  ): Promise<ResponsibleEntity> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const responsibleFound = await this.findOne({
-          where: {
-            company: companyName.toUpperCase(),
-          },
-        });
-        resolve(responsibleFound);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
 
   async createPreventive(
-    responsibleData: CreatePreventiveDto,
+    preventiveData: CreatePreventiveDto,
+    category: CategoryEntity,
+    frequency: FrequencyEntity,
+    responsible: ResponsibleEntity,
+    currentStatus: CurrentStatusEntity,
     userEntity: UserEntity,
-  ): Promise<ResponsibleEntity> {
+  ): Promise<PreventiveEntity> {
     return new Promise(async (resolve, reject) => {
       try {
-        const responsible = new ResponsibleEntity();
-        responsible.company = responsibleData.company.toUpperCase();
-        responsible.phoneNumber = responsibleData.phoneNumber;
-        responsible.email = responsibleData.email;
-        responsible.contact = responsibleData.contact;
-        responsible.user = userEntity;
+        const preventive = new PreventiveEntity();
+        preventive.description = preventiveData.description;
+        preventive.category = category;
+        preventive.frequency = frequency;
+        preventive.responsible = responsible;
+        preventive.sendNotice = preventiveData.sendNotice;
 
-        const responsibleSaved = await this.save(responsible);
-        resolve(responsibleSaved);
+        if (preventiveData.sendNotice) {
+          preventiveData.noticeDate != null
+            ? (preventive.noticeDate = new Date(preventiveData.noticeDate))
+            : (preventive.noticeDate = new Date(preventiveData.next));
+        } else {
+          preventive.noticeDate = null;
+        }
+        preventive.currentStatus = currentStatus;
+        preventive.next = new Date(preventiveData.next);
+
+        preventive.user = userEntity;
+
+        const preventiveSaved = await this.save(preventive);
+        resolve(preventiveSaved);
       } catch (error) {
         reject(error);
       }
     });
   }
 
-  async findAll(): Promise<ResponsibleEntity[]> {
+  async findAll(): Promise<PreventiveEntity[]> {
     return new Promise(async (resolve, reject) => {
       try {
-        const allResponsible = await this.find({
+        const allPreventive = await this.find({
           where: { deletedAt: IsNull() },
+          relations: {
+            category: true,
+            currentStatus: true,
+            responsible: true,
+            frequency: true,
+          },
         });
-        resolve(allResponsible);
+        resolve(allPreventive);
       } catch (error) {
         reject(error);
       }
     });
-  }*/
+  }
 }

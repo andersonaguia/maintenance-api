@@ -16,6 +16,7 @@ export class CategoryRepository extends Repository<CategoryEntity> {
         const categoryFound = await this.findOne({
           where: {
             name: name,
+            deletedAt: IsNull(),
           },
         });
         resolve(categoryFound);
@@ -50,6 +51,22 @@ export class CategoryRepository extends Repository<CategoryEntity> {
           where: { deletedAt: IsNull() },
         });
         resolve(allCategories);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  async findCategoryById(id: number): Promise<CategoryEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const categoryFound = await this.findOne({
+          where: {
+            id: +id,
+            deletedAt: IsNull(),
+          },
+        });
+        resolve(categoryFound);
       } catch (error) {
         reject(error);
       }

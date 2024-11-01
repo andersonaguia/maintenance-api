@@ -8,6 +8,6 @@ import { CurrentStatusService } from './services/current-status.service';
   imports: [UsersModule],
   controllers: [CurrentStatusController],
   providers: [CurrentStatusRepository, CurrentStatusService],
-  exports: [],
+  exports: [CurrentStatusService],
 })
 export class CurrentStatusModule {}

@@ -39,4 +39,7 @@ export class PreventiveEntity extends BaseEntity {
   @ManyToOne(() => UserEntity, { nullable: false })
   @JoinColumn({ name: 'createdBy' })
   user: UserEntity;
+
+  @Column({ nullable: true })
+  noticeDate: Date;
 }

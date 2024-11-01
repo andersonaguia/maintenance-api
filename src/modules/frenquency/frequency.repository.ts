@@ -16,7 +16,8 @@ export class FrequencyRepository extends Repository<FrequencyEntity> {
       try {
         const frequencyFound = await this.findOne({
           where: {
-            type: frequency
+            type: frequency,
+            deletedAt: IsNull(),
           },
         });
         resolve(frequencyFound);
@@ -51,6 +52,22 @@ export class FrequencyRepository extends Repository<FrequencyEntity> {
           where: { deletedAt: IsNull() },
         });
         resolve(allFrequency);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  async findFrequencyById(id: number): Promise<FrequencyEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const frequencyFound = await this.findOne({
+          where: {
+            id: +id,
+            deletedAt: IsNull(),
+          },
+        });
+        resolve(frequencyFound);
       } catch (error) {
         reject(error);
       }

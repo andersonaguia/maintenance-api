@@ -20,15 +20,18 @@ export class ResponsibleService {
     return new Promise(async (resolve, reject) => {
       try {
         const responsibleFound =
-          await this.responsibleRepository.findResponsibleByCompany(responsibleData.company);
+          await this.responsibleRepository.findResponsibleByCompany(
+            responsibleData.company,
+          );
 
         if (responsibleFound == null) {
           const id = req.user.id;
           const userEntity = await this.getUserEntity(+id);
-          const responsibleSaved = await this.responsibleRepository.createResponsible(
-            responsibleData,
-            userEntity,
-          );
+          const responsibleSaved =
+            await this.responsibleRepository.createResponsible(
+              responsibleData,
+              userEntity,
+            );
           if (responsibleSaved.id) {
             resolve({
               code: 201,
@@ -80,6 +83,18 @@ export class ResponsibleService {
       try {
         const allResponsible = await this.responsibleRepository.findAll();
         resolve(allResponsible);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  async findById(id: number): Promise<ResponsibleEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const responsible =
+          await this.responsibleRepository.findResponsibleById(+id);
+        resolve(responsible);
       } catch (error) {
         reject(error);
       }

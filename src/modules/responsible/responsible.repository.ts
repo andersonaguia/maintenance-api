@@ -19,6 +19,7 @@ export class ResponsibleRepository extends Repository<ResponsibleEntity> {
         const responsibleFound = await this.findOne({
           where: {
             company: companyName.toUpperCase(),
+            deletedAt: IsNull(),
           },
         });
         resolve(responsibleFound);
@@ -56,6 +57,22 @@ export class ResponsibleRepository extends Repository<ResponsibleEntity> {
           where: { deletedAt: IsNull() },
         });
         resolve(allResponsible);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  async findResponsibleById(id: number): Promise<ResponsibleEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const responsibleFound = await this.findOne({
+          where: {
+            id: +id,
+            deletedAt: IsNull(),
+          },
+        });
+        resolve(responsibleFound);
       } catch (error) {
         reject(error);
       }
