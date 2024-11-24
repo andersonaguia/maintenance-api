@@ -21,7 +21,7 @@ export class PreventiveService {
     private readonly responsibleService: ResponsibleService,
   ) {}
 
-  async create(
+  create(
     preventiveData: CreatePreventiveDto,
     req: any,
   ): Promise<DefaultResponseDto> {
@@ -30,23 +30,33 @@ export class PreventiveService {
         const category = await this.categoryService.findById(
           +preventiveData.categoryId,
         );
-
-        if (category.id) {
+        if (category) {
           const frequency = await this.frequencySevice.findById(
             +preventiveData.frequencyId,
           );
-          if (frequency.id) {
+          if (frequency) {
             const responsible = await this.responsibleService.findById(
               +preventiveData.responsibleId,
             );
-            if (responsible.id) {
+            if (responsible) {
               const currentStatus = await this.currentStatusService.findById(
                 +preventiveData.currentStatus,
               );
-              if (currentStatus.id) {
+              if (currentStatus) {
                 const user = await this.getUserEntity(+req.user.id);
-                const preventiveSaved = await this.preventiveRepository.createPreventive(preventiveData,category, frequency, responsible, currentStatus, user);
-                resolve({code: 201, message: "Preventiva cadastrada com sucesso!"})
+                const preventiveSaved =
+                  await this.preventiveRepository.createPreventive(
+                    preventiveData,
+                    category,
+                    frequency,
+                    responsible,
+                    currentStatus,
+                    user,
+                  );
+                resolve({
+                  code: 201,
+                  message: 'Preventiva cadastrada com sucesso!',
+                });
               } else {
                 reject({ code: 404, message: 'Status não encontrado!' });
               }
@@ -73,7 +83,7 @@ export class PreventiveService {
     });
   }
 
-  async getUserEntity(id: number): Promise<UserEntity> {
+  getUserEntity(id: number): Promise<UserEntity> {
     return new Promise(async (resolve, reject) => {
       try {
         const user = await this.usersRepository.findById(+id);
@@ -92,11 +102,22 @@ export class PreventiveService {
     });
   }
 
-  async findAll(): Promise<PreventiveEntity[]> {
+  findAll(): Promise<PreventiveEntity[]> {
     return new Promise(async (resolve, reject) => {
       try {
         const allPreventive = await this.preventiveRepository.findAll();
         resolve(allPreventive);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  async findById(id: number): Promise<PreventiveEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const frequency = await this.preventiveRepository.findPreventiveById(+id);
+        resolve(frequency);
       } catch (error) {
         reject(error);
       }

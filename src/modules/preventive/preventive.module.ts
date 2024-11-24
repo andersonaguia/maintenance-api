@@ -18,6 +18,6 @@ import { PreventiveController } from './controllers/preventive.controller';
   ],
   controllers: [PreventiveController],
   providers: [PreventiveRepository, PreventiveService],
-  exports: [],
+  exports: [PreventiveService],
 })
 export class PreventiveModule {}

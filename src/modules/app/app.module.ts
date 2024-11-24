@@ -10,6 +10,7 @@ import { FrequencyModule } from '../frenquency/frequency.module';
 import { ResponsibleModule } from '../responsible/responsible.module';
 import { PreventiveModule } from '../preventive/preventive.module';
 import { CurrentStatusModule } from '../current-status/current-status.module';
+import { PreventiveHistoryModule } from '../preventive-history/preventive-history.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({ autoLoadEntities: true, ...dataSourceOptions }),
@@ -20,6 +21,7 @@ import { CurrentStatusModule } from '../current-status/current-status.module';
     ResponsibleModule,
     CurrentStatusModule,
     PreventiveModule,
+    PreventiveHistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

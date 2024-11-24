@@ -13,26 +13,23 @@ import { JwtAuthGuard } from 'src/core/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/core/auth/guards/roles/roles.guard';
 import { UserRole } from 'src/modules/users/enum/user.role';
 import { DefaultResponseDto } from 'src/core/common/dto/default-response.dto';
-import { CreateFrequencyDto } from '../dto/create-frequency.dto';
-import { FrequencyEntity } from '../entities/frequency.entity';
-import { FrequencyService } from '../services/frequency.service';
+import { PreventiveHistoryService } from '../services/preventive-history.service';
+import { PreventiveHistoryEntity } from '../entities/preventive-history.entity';
+import { CreatePreventiveHistoryDto } from '../dto/create-preventive-history.dto';
 
-@Controller('frequency')
-export class FrequencyController {
-  constructor(private readonly frequencyService: FrequencyService) {}
+@Controller('preventive-history')
+export class PreventiveHistoryController {
+  constructor(private readonly preventiveHistoryService: PreventiveHistoryService) {}
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @Post('/create')
   async create(
-    @Body() frequency: CreateFrequencyDto,
+    @Body() preventiveHistoryData: CreatePreventiveHistoryDto,
     @Request() req: any,
   ): Promise<DefaultResponseDto> {
     try {
-      const result = await this.frequencyService.createFrequency(
-        frequency.name,
-        req,
-      );
+      const result = await this.preventiveHistoryService.create(preventiveHistoryData, req);
       return result;
     } catch (error) {
       if (error.code == 404) {
@@ -49,9 +46,9 @@ export class FrequencyController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @Get('/findall')
-  async findAll(): Promise<FrequencyEntity[]> {
+  async findAll(): Promise<PreventiveHistoryEntity[]> {
     try {
-      const result = await this.frequencyService.findAll();
+      const result = await this.preventiveHistoryService.findAll();
       return result;
     } catch (error) {
       throw new HttpException({ reason: error }, HttpStatus.BAD_REQUEST);

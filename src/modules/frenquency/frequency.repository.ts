@@ -3,7 +3,6 @@ import { DataSource, IsNull, Repository } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { UserEntity } from '../users/entities/user.entity';
 import { FrequencyEntity } from './entities/frequency.entity';
-import { Frequency } from './enum/frequency.enum';
 
 @Injectable()
 export class FrequencyRepository extends Repository<FrequencyEntity> {
@@ -11,12 +10,12 @@ export class FrequencyRepository extends Repository<FrequencyEntity> {
     super(FrequencyEntity, dataSource.createEntityManager());
   }
 
-  async findFrequencyByType(frequency: Frequency): Promise<FrequencyEntity> {
+  async findFrequencyByType(frequency: string): Promise<FrequencyEntity> {
     return new Promise(async (resolve, reject) => {
       try {
         const frequencyFound = await this.findOne({
           where: {
-            type: frequency,
+            name: frequency,
             deletedAt: IsNull(),
           },
         });
@@ -28,13 +27,13 @@ export class FrequencyRepository extends Repository<FrequencyEntity> {
   }
 
   async createFrequency(
-    type: Frequency,
+    name: string,
     userEntity: UserEntity,
   ): Promise<FrequencyEntity> {
     return new Promise(async (resolve, reject) => {
       try {
         const frequency = new FrequencyEntity();
-        frequency.type = type;
+        frequency.name = name;
         frequency.user = userEntity;
 
         const frequencySaved = await this.save(frequency);

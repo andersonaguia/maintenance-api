@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { DefaultResponseDto } from 'src/core/common/dto/default-response.dto';
 import { UsersRepository } from 'src/modules/users/users.repository';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
-import { Frequency } from '../enum/frequency.enum';
 import { FrequencyEntity } from '../entities/frequency.entity';
 import { FrequencyRepository } from '../frequency.repository';
 
@@ -14,19 +13,19 @@ export class FrequencyService {
   ) {}
 
   async createFrequency(
-    frequency: Frequency,
+    name: string,
     req: any,
   ): Promise<DefaultResponseDto> {
     return new Promise(async (resolve, reject) => {
       try {
         const foundFrequency =
-          await this.frequencyRepository.findFrequencyByType(frequency);
+          await this.frequencyRepository.findFrequencyByType(name);
 
         if (foundFrequency == null) {
           const id = req.user.id;
           const userEntity = await this.getUserEntity(+id);
           const frequencySaved = await this.frequencyRepository.createFrequency(
-            frequency,
+            name,
             userEntity,
           );
           if (frequencySaved.id) {
@@ -38,7 +37,7 @@ export class FrequencyService {
         } else {
           reject({
             code: 409,
-            message: 'Existe uma periodicidade cadastrada com o mesmo tipo!',
+            message: 'Existe uma periodicidade cadastrada com o mesmo nome!',
             error: 'Conflict',
           });
         }

@@ -70,4 +70,20 @@ export class PreventiveRepository extends Repository<PreventiveEntity> {
       }
     });
   }
+
+  async findPreventiveById(id: number): Promise<PreventiveEntity> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const preventiveFound = await this.findOne({
+          where: {
+            id: +id,
+            deletedAt: IsNull(),
+          },
+        });
+        resolve(preventiveFound);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
 }
