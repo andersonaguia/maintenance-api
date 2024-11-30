@@ -12,6 +12,7 @@ import { PreventiveModule } from '../preventive/preventive.module';
 import { CurrentStatusModule } from '../current-status/current-status.module';
 import { PreventiveHistoryModule } from '../preventive-history/preventive-history.module';
 import { CorrectiveModule } from '../corrective/corrective.module';
+import { CorrectiveHistoryModule } from '../corrective-history/corrective-history.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({ autoLoadEntities: true, ...dataSourceOptions }),
@@ -24,6 +25,7 @@ import { CorrectiveModule } from '../corrective/corrective.module';
     PreventiveModule,
     PreventiveHistoryModule,
     CorrectiveModule,
+    CorrectiveHistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
